@@ -49,3 +49,28 @@
      "access_token": "eyJ1OTQwNjM5ImV4cCI6MTY5NDA2NzUwNX0.ahj6zc23ego5wclHr5RlBJAdCOqch79ouAz_GU4qQiU"
    }
   ```
+3) Get customers api
+
+- URL: GET `/api/users/customers`
+
+- Query Params (key-value pairs) (optional)
+  - {}
+
+- Request Body (json) (optional)
+  - {}
+
+- Response
+ ```json
+  [
+    {
+      "id": 1,
+      "username": "sadid",
+      "role": "customer"
+    },
+    {
+      "id": 2,
+      "username": "mike",
+      "role": "customer"
+    }
+  ]
+   ```
