@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --screen-background: deepskyblue;
+    --frame-background: #f1f100;
+    --button-background: #007bff;
+    --button-hover-background: #0056b3;
+    --light-text: #fff;
+}
+
+.screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 2rem;
+    background-color: var(--screen-background);
+    font-family: Arial, sans-serif;
+}
+
+.frame {
+    background-color: var(--frame-background);
+    padding: 1.3rem;
+    border-radius: .3rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 20rem;
+    height: 84vh;
+    margin: 1.6rem;
+}
+
+.frame h1 {
+    margin: 1rem 0 4rem 0;
+}
+
+form input {
+    width: 100%;
+    padding: .65rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: .2rem;
+}
+
+form button {
+    width: 100%;
+    padding: 0.65rem;
+    background-color: var(--button-background);
+    color: var(--light-text);
+    border: none;
+    border-radius: .2rem;
+    margin: 2.5rem 0 1.5rem 0;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: var(--button-hover-background);
+}
+
+.frame a {
+    color: black;
+    font-size: 0.9rem;
+}
+
+.frame a:hover {
+    color: var(--button-hover-background);
+}
+
+/* Making responsive for smaller screen size */
+@media (max-width: 650px) {
+    .screen {
+        flex-direction: column;
+    }
+
+    .frame {
+        width: 17rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .frame {
+        width: 15rem;
+        height: 70vh;
+    }
+
+    .frame h1 {
+        font-size: 1.4rem ;
+        margin: 1rem 0 3rem 0;
+    }
+
+    form input {
+        padding: .40rem;
+    }
+
+    form button {
+        padding: 0.40rem;
+        margin: 2.5rem 0 1.5rem 0;
+    }
+
+    .frame a {
+        font-size: 0.7rem;
+    }
+}
