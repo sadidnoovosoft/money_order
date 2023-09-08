@@ -74,3 +74,26 @@
     }
   ]
    ```
+
+4) Get transactions api
+
+- URL: GET `/api/transactions`
+
+- Query Params (key-value pairs) (optional)
+ - {}
+
+- Request Body (json) (optional)
+  - {}
+
+- Response
+ ```json
+  [
+    {
+      "id": 1,
+      "type": "Deposit",
+      "from": null,
+      "to": "mike",
+      "amount": 100
+    }
+  ]
+   ```
