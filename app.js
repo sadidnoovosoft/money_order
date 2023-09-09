@@ -6,7 +6,7 @@ import auth from "./routes/auth.js";
 import userRouter from "./routes/users.js";
 import transactionRouter from "./routes/transactions.js";
 
-const PORT = process.env.APP_PORT || 3001;
+const PORT = process.env.APP_PORT || 3000;
 const app = express();
 
 app.use(cookieParser());
