@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-    const {username, email, password} = req.body;
+    const {email, password} = req.body;
     const client = await pool.connect();
     try {
         const result = await client.query("select * from users where email=($1)", [email]);
@@ -51,11 +51,13 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({"message": "Incorrect Credentials"});
         }
 
-        const token = jwt.sign({username, email}, process.env.JWT_SECRET, {expiresIn: '1h'});
+        const token = jwt.sign({username: user.username, email}, process.env.JWT_SECRET, {expiresIn: '1h'});
         res.cookie('access_token', token, {
             httpOnly: true
         }).status(200).json({
-            "message": "Login successful", "username": username
+            "message": "Login successful",
+            username: user.username,
+            email
         });
 
     } catch (error) {
