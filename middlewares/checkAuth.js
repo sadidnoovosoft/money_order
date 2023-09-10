@@ -11,7 +11,8 @@ const checkAuth = (req, res, next) => {
             return res.status(401).json({"message": "Invalid token"});
         }
         req.user = {
-            username: payload.username
+            username: payload.username,
+            email: payload.email
         }
         next();
     })

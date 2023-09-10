@@ -11,8 +11,8 @@ router.get("/", async (req, res) => {
         const result = await pool.query(
             `SELECT t.id, 
                 t.type, 
-                (SELECT username FROM users WHERE id=t.from_id) AS from_id, 
-                (SELECT username FROM users WHERE id=t.to_id) AS to_id, 
+                (SELECT username FROM users WHERE id=t.from_id) AS from_name, 
+                (SELECT username FROM users WHERE id=t.to_id) AS to_name, 
                 t.amount 
             FROM transactions t
             ORDER BY t.transaction_date`

@@ -9,7 +9,7 @@ router.use(checkAuth);
 router.get("/customers", async (req, res) => {
     try {
         const result = await pool.query(
-            "SELECT id, username, role FROM users WHERE role=($1)",
+            "SELECT id, username, email, role FROM users WHERE role=($1)",
             ["customer"]
         );
         res.status(200).json(result.rows);
