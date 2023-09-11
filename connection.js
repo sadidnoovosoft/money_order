@@ -1,4 +1,6 @@
 import pg from "pg";
+import {config} from "dotenv";
+config();
 
 // Singleton class that will only return one instance of pool
 class Database {

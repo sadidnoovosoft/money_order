@@ -30,14 +30,14 @@
     text-align: center;
     width: 20rem;
     height: 84vh;
-    margin: 1.6rem;
+    margin: 1.6rem 3rem;
 }
 
-.frame h1 {
+.frame h1, h2 {
     margin: 1rem 0 4rem 0;
 }
 
-form input {
+.frame form input {
     width: 100%;
     padding: .65rem;
     margin-bottom: 0.5rem;
@@ -45,7 +45,7 @@ form input {
     border-radius: .2rem;
 }
 
-form button {
+.frame form button {
     width: 100%;
     padding: 0.65rem;
     background-color: var(--button-background);
@@ -56,7 +56,7 @@ form button {
     cursor: pointer;
 }
 
-form button:hover {
+.frame form button:hover {
     background-color: var(--button-hover-background);
 }
 
@@ -69,6 +69,104 @@ form button:hover {
     color: var(--button-hover-background);
 }
 
+/* Transaction */
+.transaction-container {
+    height: 84vh;
+}
+
+.transaction {
+    background-color: var(--frame-background);
+    padding: 0.2rem;
+    font-size: .8rem;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 22rem;
+    height: 31%;
+}
+
+#withdraw {
+    margin: 1rem 0;
+}
+
+.transaction form {
+    display: flex;
+    flex-direction: column;
+    flex-flow: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0.6rem 0;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    width: 10rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+}
+
+.form-group select,
+.form-group input[type="text"] {
+    width: 80%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Style for the submit button */
+.form-group .btn-submit {
+    width: 80%;
+    padding: 9px;
+    margin-top: 1rem;
+    background-color: var(--button-background);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Style for the submit button on hover */
+.form-group .btn-submit:hover {
+    background-color: var(--button-hover-background);
+}
+
+.transaction h3 {
+    font-size: 1.1rem;
+}
+
+/* Transaction history */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    background-color: #f2f2f2;
+    font-size: .8rem;
+}
+
+th {
+    text-align: center;
+}
+
+td:nth-child(4) {
+    text-align: right;
+}
+
+#history {
+    padding: .5rem 1rem;
+    width: 26rem;
+}
+
+#history h2 {
+    margin: 1rem;
+}
+
 /* Making responsive for smaller screen size */
 @media (max-width: 650px) {
     .screen {
@@ -76,6 +174,10 @@ form button:hover {
     }
 
     .frame {
+        width: 17rem;
+    }
+
+    .transaction {
         width: 17rem;
     }
 }
@@ -86,9 +188,13 @@ form button:hover {
         height: 70vh;
     }
 
-    .frame h1 {
+    .frame h1, h2 {
         font-size: 1.4rem ;
         margin: 1rem 0 3rem 0;
+    }
+
+    .frame h2 {
+        font-size: 1.1rem;
     }
 
     form input {
@@ -102,5 +208,13 @@ form button:hover {
 
     .frame a {
         font-size: 0.7rem;
+    }
+
+    .transaction-container {
+        height: 70vh;
+    }
+
+    .transaction {
+        width: 15rem;
     }
 }

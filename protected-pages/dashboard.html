@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/login.html">Login</a></li>
+        </ul>
+    </nav>
+    <div class="screen">
+        <div id="history" class="frame">
+            <h2>Transaction History</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Types</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Add more rows here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="transaction-container">
+            <div id="deposit" class="transaction">
+                <h3>Deposit Amount</h3>
+                <form>
+                    <div class="form-group">
+                        <label>To Customer:</label>
+                        <select name="toCustomer"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount:</label>
+                        <input type="text" name="amount" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-submit" type="submit">Deposit</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="withdraw" class="transaction">
+                <h3>Withdraw Amount</h3>
+                <form>
+                    <div class="form-group">
+                        <label>From Customer:</label>
+                        <select name="fromCustomer"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount:</label>
+                        <input type="text" name="amount" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-submit" type="submit">Withdraw</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="transfer" class="transaction">
+                <h3>Transfer Amount</h3>
+                <form>
+                    <div class="form-group">
+                        <label>From Customer:</label>
+                        <select name="fromCustomer"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>To Customer:</label>
+                        <select name="toCustomer"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount:</label>
+                        <input type="text" name="amount" placeholder="Enter amount">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-submit" type="submit">Transfer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
