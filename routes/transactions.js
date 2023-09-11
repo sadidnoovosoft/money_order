@@ -11,8 +11,6 @@ router.get("/", async (req, res) => {
         const result = await pool.query(
             `SELECT t.id,
                     t.type,
-                    t.from_id,
-                    t.to_id,
                     (SELECT username FROM users WHERE id = t.from_id) AS from_name,
                     (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
                     t.amount
@@ -26,8 +24,7 @@ router.get("/", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-    const {from_id, to_id, amount} = req.body;
-    const {type} = req.query;
+    const {from_id, to_id, amount, type} = req.body;
     const client = await pool.connect();
     try {
         // Transaction

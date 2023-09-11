@@ -10,6 +10,27 @@
     --button-background: #007bff;
     --button-hover-background: #0056b3;
     --light-text: #fff;
+    --dark-gray: #999;
+    --light-gray: #777;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-text);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--dark-gray);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--light-gray);
 }
 
 .screen {
@@ -108,7 +129,7 @@
 }
 
 .form-group select,
-.form-group input[type="text"] {
+.form-group input[type="number"] {
     width: 80%;
     padding: 9px;
     border: 1px solid #ccc;
@@ -146,7 +167,7 @@ th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-    background-color: #f2f2f2;
+    background-color: var(--light-text);
     font-size: .8rem;
 }
 
@@ -160,11 +181,23 @@ td:nth-child(4) {
 
 #history {
     padding: .5rem 1rem;
-    width: 26rem;
+    width: 24rem;
 }
 
 #history h2 {
     margin: 1rem;
+}
+
+#table-wrapper {
+    overflow: hidden;
+    overflow-y: scroll;
+    min-height: 1rem;
+    max-height: 25.5rem;
+}
+
+thead {
+    top: 0;
+    position: sticky;
 }
 
 /* Making responsive for smaller screen size */
@@ -189,7 +222,7 @@ td:nth-child(4) {
     }
 
     .frame h1, h2 {
-        font-size: 1.4rem ;
+        font-size: 1.4rem;
         margin: 1rem 0 3rem 0;
     }
 

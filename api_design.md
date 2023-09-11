@@ -8,8 +8,9 @@
 - Request Body (json) (optional)
  ```json
   {
-    "username": "sadid",
-    "password": "1234"
+    "username": "admin",
+    "email": "admin@email.com",
+    "password": "admin"
   }
   ```
   
@@ -31,17 +32,19 @@
 - Request Body (json) (optional)
  ```json
   {
-    "username": "sadid",
-    "password": "1234"
+    "email": "admin@email.com",
+    "password": "admin"
   }
   ```
 
 - Response
+
  ```json
-   {
-     "message": "Login successful", 
-     "username": "sadid"
-   }
+  {
+    "message": "Login successful",
+    "username": "admin",
+    "email": "admin@email.com"
+  }
   ```
   Cookies
  ```json
@@ -49,6 +52,7 @@
      "access_token": "eyJ1OTQwNjM5ImV4cCI6MTY5NDA2NzUwNX0.ahj6zc23ego5wclHr5RlBJAdCOqch79ouAz_GU4qQiU"
    }
   ```
+
 3) Get customers api
 
 - URL: GET `/api/users/customers`
@@ -64,12 +68,14 @@
   [
     {
       "id": 1,
-      "username": "sadid",
+      "username": "admin",
+      "email": "admin@email.com",
       "role": "customer"
     },
     {
       "id": 2,
-      "username": "mike",
+      "username": "sadid",
+      "email": "sadid@gmail.com",
       "role": "customer"
     }
   ]
@@ -91,9 +97,33 @@
     {
       "id": 1,
       "type": "Deposit",
-      "from": null,
-      "to": "mike",
+      "from_name": null,
+      "to_name": "mike",
       "amount": 100
     }
   ]
+   ```
+
+5. Post transaction api
+
+- URL: POST `/api/transactions`
+
+- Query Params (key-value pairs) (optional)
+- {}
+
+- Request Body (json) (optional)
+```json
+  {
+    "from_id": null,
+    "to_id": 3,
+    "type": "Deposit",
+    "amount": 100
+  }
+```
+
+- Response
+ ```json
+  {
+    "status": "success", "message": "Transaction Completed!"
+  }
    ```

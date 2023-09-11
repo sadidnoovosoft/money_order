@@ -7,3 +7,8 @@ function handleError(message) {
     error.style.color = "red"
     error.style.fontSize = "14px";
 }
+
+const scrollToBottom = (id) => {
+    const element = document.getElementById(id);
+    element.scrollTop = element.scrollHeight;
+}

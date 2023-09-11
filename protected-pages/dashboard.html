@@ -10,20 +10,21 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <nav class="navbar">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/login.html">Login</a></li>
-        </ul>
-    </nav>
-    <div class="screen">
-        <div id="history" class="frame">
-            <h2>Transaction History</h2>
+<nav class="navbar">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/login.html">Login</a></li>
+    </ul>
+</nav>
+<div class="screen">
+    <div id="history" class="frame">
+        <h2>Transaction History</h2>
+        <div id="table-wrapper">
             <table>
                 <thead>
                 <tr>
-                    <th>Types</th>
+                    <th>Type</th>
                     <th>From</th>
                     <th>To</th>
                     <th>Amount</th>
@@ -34,62 +35,73 @@
                 </tbody>
             </table>
         </div>
-        <div class="transaction-container">
-            <div id="deposit" class="transaction">
-                <h3>Deposit Amount</h3>
-                <form>
-                    <div class="form-group">
-                        <label>To Customer:</label>
-                        <select name="toCustomer"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount:</label>
-                        <input type="text" name="amount" placeholder="Enter amount">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn-submit" type="submit">Deposit</button>
-                    </div>
-                </form>
-            </div>
+    </div>
+    <div class="transaction-container">
+        <div id="deposit" class="transaction">
+            <h3>Deposit Amount</h3>
+            <form id="deposit-form">
+                <div class="form-group">
+                    <label for="deposit-to">To Customer:</label>
+                    <select id="deposit-to" name="to_id" required>
+                        <option value="" selected disabled></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount:</label>
+                    <input type="number" name="amount" placeholder="Enter amount" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn-submit" type="submit">Deposit</button>
+                </div>
+            </form>
+        </div>
 
-            <div id="withdraw" class="transaction">
-                <h3>Withdraw Amount</h3>
-                <form>
-                    <div class="form-group">
-                        <label>From Customer:</label>
-                        <select name="fromCustomer"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount:</label>
-                        <input type="text" name="amount" placeholder="Enter amount">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn-submit" type="submit">Withdraw</button>
-                    </div>
-                </form>
-            </div>
+        <div id="withdraw" class="transaction">
+            <h3>Withdraw Amount</h3>
+            <form id="withdraw-form">
+                <div class="form-group">
+                    <label for="withdraw-from">From Customer:</label>
+                    <select id="withdraw-from" name="from_id" required>
+                        <option value="" selected disabled></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount:</label>
+                    <input type="number" name="amount" placeholder="Enter amount" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn-submit" type="submit">Withdraw</button>
+                </div>
+            </form>
+        </div>
 
-            <div id="transfer" class="transaction">
-                <h3>Transfer Amount</h3>
-                <form>
-                    <div class="form-group">
-                        <label>From Customer:</label>
-                        <select name="fromCustomer"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>To Customer:</label>
-                        <select name="toCustomer"></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount:</label>
-                        <input type="text" name="amount" placeholder="Enter amount">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn-submit" type="submit">Transfer</button>
-                    </div>
-                </form>
-            </div>
+        <div id="transfer" class="transaction">
+            <h3>Transfer Amount</h3>
+            <form id="transfer-form">
+                <div class="form-group">
+                    <label for="transfer-from">From Customer:</label>
+                    <select id="transfer-from" name="from_id" required>
+                        <option value="" selected disabled></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transfer-to">To Customer:</label>
+                    <select id="transfer-to" name="to_id" required>
+                        <option value="" selected disabled></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount:</label>
+                    <input type="number" name="amount" placeholder="Enter amount" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn-submit" type="submit">Transfer</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+<script src="/javascript/script.js"></script>
+<script src="/javascript/dashboard.js"></script>
 </body>
 </html>
