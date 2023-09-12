@@ -116,3 +116,10 @@ function addTransactionsToTable(transactions) {
     oldTableBody.parentNode.replaceChild(newTableBody, oldTableBody);
     scrollToBottom("table-wrapper");
 }
+
+window.onload = async function () {
+    const currentUser = await getCurrentUser();
+    if (currentUser.role === "customer") {
+        document.querySelector(".transaction-container").remove();
+    }
+}

@@ -2,7 +2,6 @@ version: '3.8'
 services:
   postgres:
     image: postgres:alpine
-    container_name: money_order
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -12,6 +11,21 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  node:
+    environment:
+      - NODE_ENV=development
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    expose:
+      - '3000'
+    ports:
+      - '3000:3000'
+    command: npm run dev
 
 volumes:
   postgres_data:

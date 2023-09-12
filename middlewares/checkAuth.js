@@ -13,7 +13,8 @@ const checkAuth = (req, res, next) => {
         }
         req.user = {
             username: payload.username,
-            email: payload.email
+            email: payload.email,
+            role: payload.role,
         }
         next();
     })

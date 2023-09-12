@@ -16,12 +16,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 // Protected page
 app.get("/dashboard", checkAuth, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+    res.sendFile(path.join(__dirname, 'protected-pages', 'dashboard.html'));
 })
 
 // API routes

@@ -12,3 +12,8 @@ const scrollToBottom = (id) => {
     const element = document.getElementById(id);
     element.scrollTop = element.scrollHeight;
 }
+
+// get current user
+async function getCurrentUser() {
+    return (await fetch(`${baseURL}/users/current`)).json();
+}

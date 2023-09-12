@@ -19,4 +19,8 @@ router.get("/customers", async (req, res) => {
     }
 })
 
+router.get("/current", (req, res) => {
+    res.json(req.user);
+})
+
 export default router;
