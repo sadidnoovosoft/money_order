@@ -2,6 +2,7 @@ document.getElementById("register-form").addEventListener("submit", async functi
     e.preventDefault();
 
     const formData = new FormData(this);
+    const objectData = Object.fromEntries(formData.entries());
     if (formData.get('password') !== formData.get('confirm_password')) {
         handleError('Password should match confirm password');
         return;
@@ -11,9 +12,9 @@ document.getElementById("register-form").addEventListener("submit", async functi
         const response = await fetch(`${baseURL}/auth/register`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             },
-            body: new URLSearchParams(formData)
+            body: JSON.stringify(objectData)
         });
         const data = await response.json();
         if (response.ok) {

@@ -12,6 +12,7 @@ import checkAuth from "./middlewares/checkAuth.js";
 
 const PORT = process.env.APP_PORT;
 const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -20,8 +21,7 @@ app.use(express.static('public'));
 
 // Protected page
 app.get("/dashboard", checkAuth, (req, res) => {
-    const __filename = fileURLToPath(import.meta.url)
-    res.sendFile(path.join(path.dirname(__filename), '/protected-pages/dashboard.html'));
+    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 })
 
 // API routes

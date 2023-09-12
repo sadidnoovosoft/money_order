@@ -23,13 +23,14 @@ function addCustomersToDropdown(users, selectElement) {
 
 // Post transaction
 async function postTransaction(formData) {
+    const objectData = Object.fromEntries(formData.entries());
     try {
         const response = await fetch(`${baseURL}/transactions`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             },
-            body: new URLSearchParams(formData)
+            body: JSON.stringify(objectData)
         });
 
         const data = await response.json();
