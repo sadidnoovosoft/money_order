@@ -18,6 +18,6 @@ document.getElementById("login-form").addEventListener("submit", async function 
             throw new Error(data.message);
         }
     } catch (error) {
-        handleError(error.message);
+        showMessage("error", error.message, "red");
     }
 })

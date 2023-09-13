@@ -1,5 +1,5 @@
 import express from "express";
-import pool from "../connection.js";
+import pool from "../config/connection.js";
 import checkAuth from "../middlewares/checkAuth.js";
 
 const router = express.Router();

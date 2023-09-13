@@ -12,6 +12,14 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
 
+  mailhog:
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - '1025:1025' # smtp server
+      - '8025:8025' # web ui
+
   node:
     environment:
       - NODE_ENV=development

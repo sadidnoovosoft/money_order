@@ -25,21 +25,13 @@ function addCustomersToDropdown(users, selectElement) {
 async function postTransaction(formData) {
     const objectData = Object.fromEntries(formData.entries());
     try {
-        const response = await fetch(`${baseURL}/transactions`, {
+        await fetch(`${baseURL}/transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(objectData)
         });
-
-        const data = await response.json();
-        if (response.ok) {
-            console.log(data);
-        } else {
-            throw new Error(data.message);
-        }
-
     } catch (error) {
         console.log(error);
     }
@@ -117,9 +109,23 @@ function addTransactionsToTable(transactions) {
     scrollToBottom("table-wrapper");
 }
 
+
+// Send email
+document.getElementById('email-form').addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    fetch(`${baseURL}/email`)
+        .then(response => response.json())
+        .then(data => showMessage("message", data.message, "green"))
+        .catch(() => showMessage("message", "Something went wrong", "red"));
+})
+
+
 window.onload = async function () {
     const currentUser = await getCurrentUser();
     if (currentUser.role === "customer") {
-        document.querySelector(".transaction-container").remove();
+        document.getElementById("admin-container").remove();
+    } else {
+        document.getElementById("email").remove();
     }
 }

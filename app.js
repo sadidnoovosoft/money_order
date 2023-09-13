@@ -8,6 +8,7 @@ config();
 import auth from "./routes/auth.js";
 import userRouter from "./routes/users.js";
 import transactionRouter from "./routes/transactions.js";
+import emailRouter from "./routes/emailRouter.js";
 import checkAuth from "./middlewares/checkAuth.js";
 
 const PORT = process.env.APP_PORT;
@@ -30,6 +31,7 @@ app.use("/api", apiRouter);
 apiRouter.use("/auth", auth);
 apiRouter.use("/users", userRouter);
 apiRouter.use("/transactions", transactionRouter);
+apiRouter.use("/email", emailRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
