@@ -1,12 +1,13 @@
 import express from "express";
 import pool from "../config/connection.js";
 import checkAuth from "../middlewares/checkAuth.js";
+import adminAuthorization from "../middlewares/adminAuthorization.js";
 
 const router = express.Router();
 
 router.use(checkAuth);
 
-router.get("/customers", async (req, res) => {
+router.get("/customers", adminAuthorization, async (req, res) => {
     try {
         const result = await pool.query(
             "SELECT id, username, email, role FROM users WHERE role=($1)",

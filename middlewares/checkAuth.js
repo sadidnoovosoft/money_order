@@ -7,7 +7,7 @@ const checkAuth = (req, res, next) => {
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-        if (err) {
+        if (err || (payload.role !== 'admin' && payload.role !== 'customer')) {
             res.clearCookie("access_token");
             return res.redirect("/login.html");
         }
