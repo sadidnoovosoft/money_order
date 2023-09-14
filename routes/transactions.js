@@ -1,6 +1,7 @@
 import express from "express";
 import pool from "../config/connection.js";
 import checkAuth from "../middlewares/checkAuth.js";
+import adminAuthorization from "../middlewares/adminAuthorization.js";
 
 const router = express.Router();
 
@@ -47,7 +48,7 @@ router.get("/", async (req, res) => {
     }
 })
 
-router.post("/", async (req, res) => {
+router.post("/", adminAuthorization, async (req, res) => {
     const {from_id, to_id, amount, type} = req.body;
     const client = await pool.connect();
     try {
