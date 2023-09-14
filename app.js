@@ -3,6 +3,7 @@ import path from "path";
 import {fileURLToPath} from 'url';
 import cookieParser from "cookie-parser";
 import {config} from "dotenv";
+
 config();
 
 import auth from "./routes/auth.js";
@@ -10,6 +11,7 @@ import userRouter from "./routes/users.js";
 import transactionRouter from "./routes/transactions.js";
 import emailRouter from "./routes/emailRouter.js";
 import checkAuth from "./middlewares/checkAuth.js";
+import processTransaction from "./utils/processing.js";
 
 const PORT = process.env.APP_PORT;
 const app = express();
@@ -36,3 +38,9 @@ apiRouter.use("/email", emailRouter);
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 })
+
+setInterval(() => {
+    processTransaction().then(() => {
+        console.log("Processing done!")
+    })
+}, 3000);

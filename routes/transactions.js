@@ -24,7 +24,8 @@ router.get("/", async (req, res) => {
                         t.type,
                         (SELECT username FROM users WHERE id = t.from_id) AS from_name,
                         (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
-                        t.amount
+                        t.amount,
+                        t.status
                  FROM transactions t
                  WHERE t.from_id = ($1)
                     or t.to_id = ($2)
@@ -37,7 +38,8 @@ router.get("/", async (req, res) => {
                         t.type,
                         (SELECT username FROM users WHERE id = t.from_id) AS from_name,
                         (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
-                        t.amount
+                        t.amount,
+                        t.status
                  FROM transactions t
                  ORDER BY t.transaction_date`,
             );

@@ -84,6 +84,7 @@ function fetchTransactionHistory() {
 }
 
 fetchTransactionHistory();
+setInterval(() => fetchTransactionHistory(), 15000)
 
 function addTransactionsToTable(transactions) {
     const oldTableBody = document.getElementById("history").getElementsByTagName("tbody")[0];
@@ -96,6 +97,7 @@ function addTransactionsToTable(transactions) {
         tr.appendChild(getCell(transaction.from_name));
         tr.appendChild(getCell(transaction.to_name));
         tr.appendChild(getCell(transaction.amount));
+        tr.appendChild(getCell(transaction.status));
         newTableBody.appendChild(tr);
     })
 
@@ -113,7 +115,6 @@ function addTransactionsToTable(transactions) {
 // Send email
 document.getElementById('email-form').addEventListener("submit", (e) => {
     e.preventDefault();
-
 
 
     const rowCount = document.getElementById("rowCount").value;

@@ -1,5 +1,5 @@
 const adminAuthorization = (req, res, next) => {
-    if(req.role !== 'admin') {
+    if(req.user.role !== 'admin') {
         return res.redirect("/login.html");
     }
     next();
