@@ -3,7 +3,8 @@ import nodemailer from "nodemailer";
 class Email {
     constructor(receiverAddress, username, htmlTable) {
         this.transporter = nodemailer.createTransport({
-            port: 1025,
+            host: process.env.MAILHOG_HOST,
+            port: process.env.MAILHOG_SMTP_PORT
         });
 
         this.mailOptions = {
