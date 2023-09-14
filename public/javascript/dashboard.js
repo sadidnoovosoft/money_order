@@ -114,10 +114,20 @@ function addTransactionsToTable(transactions) {
 document.getElementById('email-form').addEventListener("submit", (e) => {
     e.preventDefault();
 
-    fetch(`${baseURL}/email`)
+
+
+    const rowCount = document.getElementById("rowCount").value;
+    const isChecked = document.getElementById("all").checked;
+
+    fetch(`${baseURL}/email` + `${isChecked ? '' : '?rows=' + rowCount}`)
         .then(response => response.json())
         .then(data => showMessage("message", data.message, "green"))
         .catch(() => showMessage("message", "Something went wrong", "red"));
+})
+
+// Rows input should be disabled when checkbox is checked
+document.getElementById("all").addEventListener("click", function () {
+    document.getElementById("rowCount").disabled = this.checked;
 })
 
 

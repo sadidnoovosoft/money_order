@@ -20,7 +20,7 @@ class Email {
             if (error) {
                 return console.log(error);
             }
-            console.log(`Message sent, ID: ${info.messageId}`);
+            return info.messageId;
         });
     }
 }

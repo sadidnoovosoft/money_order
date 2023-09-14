@@ -122,7 +122,7 @@
 }
 
 .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     width: 10rem;
 }
 
@@ -149,6 +149,12 @@
     border: none;
     border-radius: 3px;
     cursor: pointer;
+}
+
+#checkbox {
+    display: flex;
+    margin: auto;
+    justify-content: space-evenly;
 }
 
 /* Style for the submit button on hover */
@@ -205,7 +211,7 @@ thead {
 
 /* Email */
 #email-history {
-    height: 25%;
+    height: 36%;
 }
 
 #email-form {
