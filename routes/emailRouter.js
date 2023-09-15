@@ -1,17 +1,17 @@
 import express from "express";
 
-import Email from "../config/emailConfig.js";
 import pool from "../config/connection.js";
 import checkAuth from "../middlewares/checkAuth.js";
-import {formatDataToHTML} from "../utils/helpers.js";
+import customerAuthorization from "../middlewares/customerAuthorization.js";
 
 const router = express.Router();
 
-router.use(checkAuth);
+router.use([checkAuth, customerAuthorization]);
 
-router.get("/", async (req, res) => {
-    const rows = req.query['rows'];
-    const {email: emailAddress, username} = req.user;
+router.post("/", async (req, res) => {
+    const {rows} = req.body;
+    const rowCount = isNaN(rows) ? null : Number(rows);
+    const {username} = req.user;
 
     try {
         const customerId = (await pool.query(
@@ -21,32 +21,49 @@ router.get("/", async (req, res) => {
             [username]
         )).rows[0].id;
 
-        const result = await pool.query(
-            `SELECT *
-             FROM (SELECT t.id,
-                          t.type,
-                          (SELECT username FROM users WHERE id = t.from_id) AS from_name,
-                          (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
-                          t.amount,
-                          t.transaction_date
-                   FROM transactions t
-                   WHERE t.from_id = ($1)
-                      or t.to_id = ($2)
-                   ORDER BY t.transaction_date DESC` + `${rows ? ' LIMIT ' + rows : ''}) sub`
-            + ` ORDER BY sub.transaction_date ASC`,
-            [customerId, customerId]
-        );
-
-        const htmlTable = formatDataToHTML(result.rows);
-        const email = new Email(emailAddress, username, htmlTable);
-        email.sendMail();
+        if (rowCount) {
+            await pool.query(
+                `INSERT INTO emails (receiver_id, row_count)
+                 VALUES (($1), ($2))`,
+                [customerId, rowCount]
+            );
+        } else {
+            await pool.query(
+                `INSERT INTO emails (receiver_id)
+                 VALUES (($1))`,
+                [customerId]
+            );
+        }
 
         res.status(200).json({
-            message: "Email sent successfully!"
+            message: "Email added to queue!"
         })
     } catch (error) {
         console.log(error);
         res.status(500).json(error);
+    }
+});
+
+router.get("/", async (req, res) => {
+    const {username, email} = req.user;
+    try {
+        const receiver_id = (await pool.query(
+            `SELECT id
+             FROM users
+             WHERE username = ($1)`,
+            [username]
+        )).rows[0].id;
+
+        const result = await pool.query(
+            `SELECT id, ($1) as email, row_count, status
+             FROM emails
+             WHERE receiver_id = ($2)`,
+            [email, receiver_id]
+        );
+        res.status(200).json(result.rows);
+
+    } catch (error) {
+        res.status(500).send(error);
     }
 })
 

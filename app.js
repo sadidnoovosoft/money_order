@@ -11,7 +11,7 @@ import userRouter from "./routes/users.js";
 import transactionRouter from "./routes/transactions.js";
 import emailRouter from "./routes/emailRouter.js";
 import checkAuth from "./middlewares/checkAuth.js";
-import processTransaction from "./utils/processing.js";
+import {processTransaction, processEmails} from "./utils/processing.js";
 
 const PORT = process.env.APP_PORT;
 const app = express();
@@ -40,7 +40,11 @@ app.listen(PORT, () => {
 })
 
 setInterval(() => {
-    processTransaction().then(() => {
-        console.log("Processing done!")
+    // processTransaction().then(() => {
+    //     console.log("Transaction Processing done!")
+    // })
+
+    processEmails().then(() => {
+        console.log("Email Processing done!")
     })
 }, 10000);

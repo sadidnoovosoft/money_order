@@ -11,18 +11,18 @@ class Email {
             from: 'noreply@moneyorder.com',
             to: receiverAddress,
             subject: 'Transaction History',
-            text: `Hi ${username}, This is your request transaction history.`,
+            text: `Hi ${username}, here is your requested transaction history.`,
             html: htmlTable
         };
     }
 
-    sendMail() {
-        this.transporter.sendMail(this.mailOptions, (error, info) => {
-            if (error) {
-                return console.log(error);
-            }
+    async sendMail() {
+        try {
+            const info = await this.transporter.sendMail(this.mailOptions);
             return info.messageId;
-        });
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
