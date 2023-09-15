@@ -40,10 +40,12 @@ app.listen(PORT, () => {
 })
 
 setInterval(() => {
-    // processTransaction().then(() => {
-    //     console.log("Transaction Processing done!")
-    // })
+    processTransaction().then(() => {
+        console.log("Transaction Processing done!")
+    })
+}, 10000);
 
+setInterval(() => {
     processEmails().then(() => {
         console.log("Email Processing done!")
     })

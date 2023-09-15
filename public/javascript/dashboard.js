@@ -9,8 +9,6 @@ function getCustomers() {
         })
 }
 
-getCustomers();
-
 function addCustomersToDropdown(users, selectElement) {
     users.forEach(user => {
         const option = document.createElement("option");
@@ -108,22 +106,29 @@ function addTransactionsToTable(transactions) {
     }
 
     oldTableBody.parentNode.replaceChild(newTableBody, oldTableBody);
-    scrollToBottom("table-wrapper");
+    scrollToBottom(".table-wrapper");
 }
 
 
 // Send email
-document.getElementById('email-form').addEventListener("submit", (e) => {
+document.getElementById('email-form').addEventListener("submit", function (e) {
     e.preventDefault();
-
 
     const rowCount = document.getElementById("rowCount").value;
     const isChecked = document.getElementById("all").checked;
 
-    fetch(`${baseURL}/email` + `${isChecked ? '' : '?rows=' + rowCount}`)
+    fetch(`${baseURL}/email`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({rows: isChecked ? null : rowCount})
+    })
         .then(response => response.json())
-        .then(data => showMessage("message", data.message, "green"))
-        .catch(() => showMessage("message", "Something went wrong", "red"));
+        .then(() => fetchEmailHistory())
+        .catch(err => console.log(err));
+
+    this.reset();
 })
 
 // Rows input should be disabled when checkbox is checked
@@ -132,11 +137,47 @@ document.getElementById("all").addEventListener("click", function () {
 })
 
 
+// Displaying email table to customers
+function fetchEmailHistory() {
+    console.log("hi hi")
+    fetch(`${baseURL}/email`)
+        .then(response => response.json())
+        .then(emailList => addToEmailsTable(emailList));
+}
+
+function addToEmailsTable(emailList) {
+    console.log(emailList)
+    const oldTableBody = document.getElementById("email").getElementsByTagName("tbody")[0];
+    const newTableBody = document.createElement("tbody");
+
+    emailList.forEach(email => {
+        const tr = document.createElement("tr");
+        tr.id = email.id;
+        tr.appendChild(getCell(email.email));
+        tr.appendChild(getCell(email.row_count || "All"));
+        tr.appendChild(getCell(email.status));
+        newTableBody.appendChild(tr);
+    })
+
+    function getCell(text) {
+        const cell = document.createElement("td");
+        cell.innerText = text;
+        return cell;
+    }
+
+    oldTableBody.parentNode.replaceChild(newTableBody, oldTableBody);
+    scrollToBottom("#email-table");
+}
+
 window.onload = async function () {
     const currentUser = await getCurrentUser();
     if (currentUser.role === "customer") {
+        console.log("hi")
         document.getElementById("admin-container").remove();
+        fetchEmailHistory();
+        setInterval(() => fetchEmailHistory(), 15000)
     } else {
         document.getElementById("email").remove();
+        getCustomers();
     }
 }

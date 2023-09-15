@@ -8,8 +8,8 @@ function showMessage(elementId, message, color) {
     element.style.fontSize = "13px";
 }
 
-const scrollToBottom = (id) => {
-    const element = document.getElementById(id);
+const scrollToBottom = (selector) => {
+    const element = document.querySelector(selector);
     element.scrollTop = element.scrollHeight;
 }
 

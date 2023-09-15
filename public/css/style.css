@@ -197,11 +197,16 @@ td:nth-child(4) {
     margin: 1rem;
 }
 
-#table-wrapper {
+.table-wrapper {
     overflow: hidden;
     overflow-y: scroll;
     min-height: 1rem;
     max-height: 25.5rem;
+}
+
+#email .table-wrapper {
+    min-height: 1rem;
+    max-height: 14rem;
 }
 
 thead {
@@ -210,6 +215,28 @@ thead {
 }
 
 /* Email */
+#email {
+    display: flex;
+    flex-direction: column;
+}
+
+#email-history, #email-list {
+    width: 80%;
+}
+
+#email-list {
+    height: 20rem;
+    background-color: #f1f100;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    padding: 0 .8rem;
+}
+
+#email-list h2 {
+    margin: 1.4rem;
+}
+
 #email-history {
     height: 36%;
 }

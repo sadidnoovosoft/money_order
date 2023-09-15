@@ -57,7 +57,8 @@ router.get("/", async (req, res) => {
         const result = await pool.query(
             `SELECT id, ($1) as email, row_count, status
              FROM emails
-             WHERE receiver_id = ($2)`,
+             WHERE receiver_id = ($2)
+             ORDER BY created_at`,
             [email, receiver_id]
         );
         res.status(200).json(result.rows);
