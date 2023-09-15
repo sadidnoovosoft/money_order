@@ -21,19 +21,20 @@ services:
       - '8025:8025' # web ui
 
   node:
+    build: .
     environment:
-      - NODE_ENV=development
+      - APP_PORT=3000
+      - DB_USER=postgres
+      - DB_HOST=postgres
+      - DB_DATABASE=money_order
+      - DB_PASSWORD=postgres
+      - DB_PORT=5432
+      - JWT_SECRET=sew45r9owe30re4er3wer
+      - MAILHOG_HOST=mailhog
+      - MAILHOG_SMTP_PORT=1025
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/usr/src/app
-    expose:
-      - '3000'
     ports:
       - '3000:3000'
-    command: npm run dev
 
 volumes:
   postgres_data:

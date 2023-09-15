@@ -6,5 +6,4 @@ transfers from a bank middleman's perspective.
 ## Start application
 ```bash
 docker compose up -d
-npm start
 ```
