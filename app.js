@@ -43,4 +43,4 @@ setInterval(() => {
     processTransaction().then(() => {
         console.log("Processing done!")
     })
-}, 3000);
+}, 10000);

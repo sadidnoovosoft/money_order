@@ -67,33 +67,6 @@ async function updateStatus(transactionId, newStatus) {
     );
 }
 
-async function processSingleTransaction({id, type, from_id, to_id, amount}) {
-    if (type === 'deposit') {
-        const toBalance = await getBalance(to_id);
-        await setBalance(to_id, toBalance + amount);
-        await updateStatus(id, 'processed');
-    } else if (type === 'withdraw') {
-        const fromBalance = await getBalance(from_id);
-        if (fromBalance < amount) {
-            await updateStatus(id, 'failed');
-            return;
-        }
-        await setBalance(from_id, fromBalance - amount);
-        await updateStatus(id, 'processed');
-    } else {
-        const fromBalance = await getBalance(from_id);
-        const toBalance = await getBalance(to_id);
-        if (fromBalance < amount) {
-            await updateStatus(id, 'failed');
-            return;
-        }
-        await setBalance(from_id, fromBalance - amount);
-        await setBalance(to_id, toBalance + amount);
-        await updateStatus(id, 'processed');
-    }
-}
-
 export {
-    formatDataToHTML, getTransactions, getBalance,
-    setBalance, updateStatus, processSingleTransaction
+    formatDataToHTML, getTransactions, getBalance, setBalance, updateStatus
 };
