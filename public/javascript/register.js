@@ -9,19 +9,14 @@ document.getElementById("register-form").addEventListener("submit", async functi
     }
 
     try {
-        const response = await fetch(`${baseURL}/auth/register`, {
+        const data = await callFetch(`${baseURL}/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(objectData)
         });
-        const data = await response.json();
-        if (response.ok) {
-            window.location.replace("/login.html");
-        } else {
-            throw new Error(data.message);
-        }
+        showMessage("error", data.message, "red");
     } catch (error) {
         showMessage("error", error.message, "red");
     }

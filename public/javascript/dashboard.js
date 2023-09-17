@@ -1,12 +1,13 @@
 // Get all customers
-function getCustomers() {
-    fetch(`${baseURL}/users/customers`)
-        .then(response => response.json())
-        .then(users => {
-            Array.from(document.getElementsByTagName("select")).forEach(selectElement => {
-                addCustomersToDropdown(users, selectElement);
-            })
-        })
+async function getCustomers() {
+    try {
+        const users = await callFetch(`${baseURL}/users/customers`);
+        Array.from(document.getElementsByTagName("select")).forEach(selectElement => {
+            addCustomersToDropdown(users, selectElement);
+        });
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 function addCustomersToDropdown(users, selectElement) {
@@ -21,9 +22,9 @@ function addCustomersToDropdown(users, selectElement) {
 
 // Post transaction
 async function postTransaction(formData) {
-    const objectData = Object.fromEntries(formData.entries());
     try {
-        await fetch(`${baseURL}/transactions`, {
+        const objectData = Object.fromEntries(formData.entries());
+        await callFetch(`${baseURL}/transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,7 +43,7 @@ document.getElementById("deposit-form").addEventListener("submit", async functio
     formData.set("type", "deposit");
 
     await postTransaction(formData);
-    fetchTransactionHistory();
+    await fetchTransactionHistory();
     this.reset();
 });
 
@@ -53,7 +54,7 @@ document.getElementById("withdraw-form").addEventListener("submit", async functi
     formData.set("type", "withdraw");
 
     await postTransaction(formData);
-    fetchTransactionHistory();
+    await fetchTransactionHistory();
     this.reset();
 });
 
@@ -69,20 +70,20 @@ document.getElementById("transfer-form").addEventListener("submit", async functi
     }
 
     await postTransaction(formData);
-    fetchTransactionHistory();
+    await fetchTransactionHistory();
     this.reset();
 });
 
 
 // Get Transaction History
-function fetchTransactionHistory() {
-    fetch(`${baseURL}/transactions`)
-        .then(response => response.json())
-        .then(transactions => addTransactionsToTable(transactions));
+async function fetchTransactionHistory() {
+    try {
+        const transactions = await callFetch(`${baseURL}/transactions`);
+        addTransactionsToTable(transactions);
+    } catch (error) {
+        console.log(error);
+    }
 }
-
-fetchTransactionHistory();
-setInterval(() => fetchTransactionHistory(), 15000)
 
 function addTransactionsToTable(transactions) {
     const oldTableBody = document.getElementById("history").getElementsByTagName("tbody")[0];
@@ -111,23 +112,24 @@ function addTransactionsToTable(transactions) {
 
 
 // Send email
-document.getElementById('email-form').addEventListener("submit", function (e) {
+document.getElementById('email-form').addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const rowCount = document.getElementById("rowCount").value;
     const isChecked = document.getElementById("all").checked;
 
-    fetch(`${baseURL}/email`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({rows: isChecked ? null : rowCount})
-    })
-        .then(response => response.json())
-        .then(() => fetchEmailHistory())
-        .catch(err => console.log(err));
-
+    try {
+        await callFetch(`${baseURL}/email`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({rows: isChecked ? null : rowCount})
+        });
+        await fetchEmailHistory();
+    } catch (error) {
+        console.log(error);
+    }
     this.reset();
 })
 
@@ -138,15 +140,16 @@ document.getElementById("all").addEventListener("click", function () {
 
 
 // Displaying email table to customers
-function fetchEmailHistory() {
-    console.log("hi hi")
-    fetch(`${baseURL}/email`)
-        .then(response => response.json())
-        .then(emailList => addToEmailsTable(emailList));
+async function fetchEmailHistory() {
+    try {
+        const emailList = await callFetch(`${baseURL}/email`);
+        addToEmailsTable(emailList);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 function addToEmailsTable(emailList) {
-    console.log(emailList)
     const oldTableBody = document.getElementById("email").getElementsByTagName("tbody")[0];
     const newTableBody = document.createElement("tbody");
 
@@ -169,15 +172,24 @@ function addToEmailsTable(emailList) {
     scrollToBottom("#email-table");
 }
 
-window.onload = async function () {
-    const currentUser = await getCurrentUser();
-    if (currentUser.role === "customer") {
-        console.log("hi")
-        document.getElementById("admin-container").remove();
-        fetchEmailHistory();
-        setInterval(() => fetchEmailHistory(), 15000)
-    } else {
-        document.getElementById("email").remove();
-        getCustomers();
+async function init() {
+    try {
+        const currentUser = await getCurrentUser();
+
+        if (currentUser.role === "customer") {
+            document.getElementById("admin-container").remove();
+            await fetchEmailHistory();
+            setInterval(() => fetchEmailHistory(), 15000);
+        } else {
+            document.getElementById("email").remove();
+            await getCustomers();
+        }
+
+        await fetchTransactionHistory();
+        setInterval(() => fetchTransactionHistory(), 15000);
+    } catch (error) {
+        console.log(error);
     }
 }
+
+init();

@@ -1,6 +1,6 @@
 const customerAuthorization = (req, res, next) => {
     if(req.user.role !== 'customer') {
-        return res.redirect("/login.html");
+        return res.status(403).json({message: "Unauthorized Access!"});
     }
     next();
 }

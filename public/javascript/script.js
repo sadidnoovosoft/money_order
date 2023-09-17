@@ -17,3 +17,27 @@ const scrollToBottom = (selector) => {
 async function getCurrentUser() {
     return (await fetch(`${baseURL}/users/current`)).json();
 }
+
+// Make api call
+async function callFetch(apiURI, options) {
+    const response = await fetch(apiURI, options);
+    if (!response.ok) {
+        if (window.location.pathname !== "/login.html") {
+            window.location.replace("/login.html");
+        }
+        return;
+    }
+    return await response.json();
+}
+
+window.onload = async function () {
+    const currentUser = await getCurrentUser();
+    const login = document.getElementById("login");
+    if (!currentUser.username) {
+        login.href = "/login.html";
+        login.innerText = "Login";
+        return;
+    }
+    login.href = `${baseURL}/auth/logout`;
+    login.innerText = "Sign out"
+}

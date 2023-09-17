@@ -12,6 +12,8 @@
     --light-text: #fff;
     --dark-gray: #999;
     --light-gray: #777;
+    --btn-background-danger: #f10000;
+    --btn-danger-hover: #c91d1d;
 }
 
 /* width */

@@ -16,6 +16,7 @@
 .navbar ul li {
     display: inline;
     margin-right: 1.25rem;
+    cursor: pointer;
 }
 
 .navbar a {
