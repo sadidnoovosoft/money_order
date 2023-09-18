@@ -26,11 +26,12 @@ router.get("/", async (req, res) => {
                         (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
                         t.amount,
                         t.status
-                 FROM transactions t
-                 WHERE t.from_id = ($1)
-                    or t.to_id = ($2)
-                 ORDER BY t.transaction_date`,
-                [customerId, customerId]
+                 FROM jobs t
+                 WHERE (t.from_id = ($1)
+                     or t.to_id = ($1))
+                   AND type != ($2)
+                 ORDER BY t.created_at`,
+                [customerId, "email"]
             );
         } else {
             result = await pool.query(
@@ -40,8 +41,10 @@ router.get("/", async (req, res) => {
                         (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
                         t.amount,
                         t.status
-                 FROM transactions t
-                 ORDER BY t.transaction_date`,
+                 FROM jobs t
+                 WHERE type != ($1)
+                 ORDER BY t.created_at`,
+                ["email"]
             );
         }
         res.status(200).json(result.rows);
@@ -52,10 +55,11 @@ router.get("/", async (req, res) => {
 
 router.post("/", adminAuthorization, async (req, res) => {
     const {from_id, to_id, amount, type} = req.body;
+
     const client = await pool.connect();
     try {
         await client.query(
-            "INSERT INTO transactions (type, from_id, to_id, amount) VALUES ($1, $2, $3, $4)",
+            "INSERT INTO jobs (type, from_id, to_id, amount) VALUES ($1, $2, $3, $4)",
             [type, from_id, to_id, amount]);
 
         res.status(200).json({

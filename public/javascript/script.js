@@ -13,6 +13,11 @@ const scrollToBottom = (selector) => {
     element.scrollTop = element.scrollHeight;
 }
 
+function capitalize(string) {
+    if(string==="" || !string)return "";
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 // get current user
 async function getCurrentUser() {
     return (await fetch(`${baseURL}/users/current`)).json();

@@ -23,15 +23,15 @@ router.post("/", async (req, res) => {
 
         if (rowCount) {
             await pool.query(
-                `INSERT INTO emails (receiver_id, row_count)
-                 VALUES (($1), ($2))`,
-                [customerId, rowCount]
+                `INSERT INTO jobs (receiver_id, row_count, type)
+                 VALUES (($1), ($2), ($3))`,
+                [customerId, rowCount, "email"]
             );
         } else {
             await pool.query(
-                `INSERT INTO emails (receiver_id)
-                 VALUES (($1))`,
-                [customerId]
+                `INSERT INTO jobs (receiver_id, type)
+                 VALUES (($1), ($2))`,
+                [customerId, "email"]
             );
         }
 
@@ -56,10 +56,11 @@ router.get("/", async (req, res) => {
 
         const result = await pool.query(
             `SELECT id, ($1) as email, row_count, status
-             FROM emails
+             FROM jobs
              WHERE receiver_id = ($2)
+               AND type = ($3)
              ORDER BY created_at`,
-            [email, receiver_id]
+            [email, receiver_id, "email"]
         );
         res.status(200).json(result.rows);
 

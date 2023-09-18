@@ -89,14 +89,14 @@ function addTransactionsToTable(transactions) {
     const oldTableBody = document.getElementById("history").getElementsByTagName("tbody")[0];
     const newTableBody = document.createElement("tbody");
 
-    transactions.forEach(transaction => {
+    transactions.forEach(({id, type, from_name, to_name, amount, status}) => {
         const tr = document.createElement("tr");
-        tr.id = transaction.id;
-        tr.appendChild(getCell(transaction.type));
-        tr.appendChild(getCell(transaction.from_name));
-        tr.appendChild(getCell(transaction.to_name));
-        tr.appendChild(getCell(transaction.amount));
-        tr.appendChild(getCell(transaction.status));
+        tr.id = id;
+        tr.appendChild(getCell(capitalize(type)));
+        tr.appendChild(getCell(capitalize(from_name)));
+        tr.appendChild(getCell(capitalize(to_name)));
+        tr.appendChild(getCell(amount));
+        tr.appendChild(getCell(capitalize(status)));
         newTableBody.appendChild(tr);
     })
 
@@ -119,7 +119,7 @@ document.getElementById('email-form').addEventListener("submit", async function 
     const isChecked = document.getElementById("all").checked;
 
     try {
-        await callFetch(`${baseURL}/email`, {
+        await callFetch(`${baseURL}/emails`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -142,7 +142,7 @@ document.getElementById("all").addEventListener("click", function () {
 // Displaying email table to customers
 async function fetchEmailHistory() {
     try {
-        const emailList = await callFetch(`${baseURL}/email`);
+        const emailList = await callFetch(`${baseURL}/emails`);
         addToEmailsTable(emailList);
     } catch (error) {
         console.log(error);
@@ -153,12 +153,12 @@ function addToEmailsTable(emailList) {
     const oldTableBody = document.getElementById("email").getElementsByTagName("tbody")[0];
     const newTableBody = document.createElement("tbody");
 
-    emailList.forEach(email => {
+    emailList.forEach(({id, email, row_count, status}) => {
         const tr = document.createElement("tr");
-        tr.id = email.id;
-        tr.appendChild(getCell(email.email));
-        tr.appendChild(getCell(email.row_count || "All"));
-        tr.appendChild(getCell(email.status));
+        tr.id = id;
+        tr.appendChild(getCell(email));
+        tr.appendChild(getCell(row_count || "All"));
+        tr.appendChild(getCell(capitalize(status)));
         newTableBody.appendChild(tr);
     })
 

@@ -11,7 +11,7 @@ import userRouter from "./routes/users.js";
 import transactionRouter from "./routes/transactions.js";
 import emailRouter from "./routes/emailRouter.js";
 import checkAuth from "./middlewares/checkAuth.js";
-import {processTransaction, processEmails} from "./utils/processing.js";
+import processJobs from "./utils/processing.js";
 
 const PORT = process.env.APP_PORT;
 const app = express();
@@ -33,20 +33,14 @@ app.use("/api", apiRouter);
 apiRouter.use("/auth", auth);
 apiRouter.use("/users", userRouter);
 apiRouter.use("/transactions", transactionRouter);
-apiRouter.use("/email", emailRouter);
+apiRouter.use("/emails", emailRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 })
 
 setInterval(() => {
-    processTransaction().then(() => {
-        console.log("Transaction Processing done!")
-    })
-}, 10000);
-
-setInterval(() => {
-    processEmails().then(() => {
-        console.log("Email Processing done!")
+    processJobs().then(() => {
+        console.log("Jobs Processing done!")
     })
 }, 10000);

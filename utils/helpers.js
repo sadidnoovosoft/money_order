@@ -27,12 +27,12 @@ function formatDataToHTML(transactions) {
     return htmlTable;
 }
 
-async function getTransactions() {
+async function getJobs() {
     const result = await pool.query(
         `SELECT *
-         FROM transactions
+         FROM jobs
          WHERE status = ($1)
-         ORDER BY transaction_date
+         ORDER BY created_at
          LIMIT 10`,
         ['pending']
     );
@@ -58,25 +58,13 @@ async function setBalance(userId, newBalance) {
     );
 }
 
-async function updateTransactionStatus(transactionId, newStatus) {
+async function updateStatus(jobId, newStatus) {
     await pool.query(
-        `UPDATE transactions
+        `UPDATE jobs
          SET status = ($1)
          WHERE id = ($2)`,
-        [newStatus, transactionId]
+        [newStatus, jobId]
     );
-}
-
-async function getEmails() {
-    const result = await pool.query(
-        `SELECT *
-         FROM emails
-         WHERE status = ($1)
-         ORDER BY created_at
-         LIMIT 10`,
-        ['pending']
-    );
-    return result.rows;
 }
 
 async function getEmailContent(customerId, row_count) {
@@ -108,23 +96,12 @@ async function getReceiverDetails(receiver_id) {
     return result.rows[0];
 }
 
-async function updateEmailStatus(id, newStatus) {
-    await pool.query(
-        `UPDATE emails
-         SET status = ($1)
-         WHERE id = ($2)`,
-        [newStatus, id]
-    );
-}
-
 export {
     formatDataToHTML,
-    getTransactions,
+    getJobs,
     getBalance,
     setBalance,
-    updateTransactionStatus,
-    updateEmailStatus,
-    getEmails,
+    updateStatus,
     getEmailContent,
     getReceiverDetails
 };

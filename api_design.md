@@ -1,4 +1,4 @@
-1) Register api
+### 1) Register Customer api
 
 - URL: POST `/api/auth/register`
 
@@ -22,7 +22,7 @@
    }
    ```
 
-2) Login api
+### 2) Login api
 
 - URL: POST `/api/auth/login`
 
@@ -53,7 +53,7 @@
    }
   ```
 
-3) Get customers api
+### 3) Get customers api
 
 - URL: GET `/api/users/customers`
 
@@ -81,7 +81,7 @@
   ]
    ```
 
-4) Get transactions api
+### 4) Get transactions api
 
 - URL: GET `/api/transactions`
 
@@ -104,7 +104,7 @@
   ]
    ```
 
-5. Post transaction api
+### 5) Post transaction api
 
 - URL: POST `/api/transactions`
 
@@ -125,5 +125,69 @@
  ```json
   {
     "status": "success", "message": "Transaction Completed!"
+  }
+   ```
+
+### 6) Get Current User api
+
+- URL: GET `/api/auth/current`
+
+- Query Params (key-value pairs) (optional)
+- {}
+
+- Request Body (json) (optional)
+  - {}
+
+- Response
+ ```json
+  {
+    "username": "admin",
+    "email": "admin@email.com",
+    "role": "admin"
+  }
+   ```
+
+### 7) Get Emails api
+
+- URL: GET `/api/emails`
+
+- Query Params (key-value pairs) (optional)
+- {}
+
+- Request Body (json) (optional)
+  - {}
+
+- Response
+ ```json
+  [
+    {
+      "id": "79",
+      "email": "sadid@gmail.com",
+      "row_count": null,
+      "status": "sent"
+    },
+    {
+      "id": "80",
+      "email": "sadid@gmail.com",
+      "row_count": "3",
+      "status": "pending"
+    }
+  ]
+   ```
+
+### 8) Post Email api
+
+- URL: POST `/api/emails`
+
+- Query Params (key-value pairs) (optional)
+- {}
+
+- Request Body (json) (optional)
+  - {}
+
+- Response
+ ```json
+  {
+    "message": "Email added to queue!"
   }
    ```

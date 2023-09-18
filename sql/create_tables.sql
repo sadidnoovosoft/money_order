@@ -49,3 +49,20 @@ create table emails
 
 alter table emails
     owner to postgres;
+
+-- Creating jobs table
+create table jobs
+(
+    id bigint generated always as identity primary key,
+    receiver_id bigint,
+    from_id bigint,
+    to_id bigint,
+    amount bigint,
+    row_count bigint,
+    status varchar(255) default 'pending'::character varying not null,
+    created_at timestamp default now(),
+    type varchar(255) not null
+);
+
+alter table jobs
+    owner to postgres;
