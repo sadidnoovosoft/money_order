@@ -65,7 +65,33 @@ router.get("/", async (req, res) => {
         res.status(200).json(result.rows);
 
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).json(error);
+    }
+})
+
+router.patch("/:emailId", async (req, res) => {
+    try {
+        const {emailId} = req.params;
+        let {rowCount} = req.body;
+        if (isNaN(rowCount)) {
+            rowCount = null;
+        }
+
+        const result = await pool.query(
+            `UPDATE jobs
+             set row_count = ($1)
+             WHERE id = ($2)
+               AND status = ($3)`,
+            [rowCount, emailId, 'pending']
+        );
+
+        if (result.rowCount === 0) {
+            res.json({message: "Email already processed!"})
+        } else {
+            res.json({message: "Row count updated!"})
+        }
+    } catch (error) {
+        res.json(error);
     }
 })
 

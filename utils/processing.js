@@ -9,8 +9,13 @@ import {
 } from "./helpers.js";
 import Email from "../config/emailConfig.js";
 
-async function processJobs() {
-    const jobs = await getJobs();
+async function processJobs(jobCount) {
+    const jobs = await getJobs(jobCount);
+
+    for(const job of jobs) {
+        await updateStatus(job.id, 'In Process');
+    }
+
     for (const job of jobs) {
         if (job.type === "email") {
             await processEmail(job);

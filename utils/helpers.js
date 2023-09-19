@@ -27,14 +27,14 @@ function formatDataToHTML(transactions) {
     return htmlTable;
 }
 
-async function getJobs() {
+async function getJobs(jobCount) {
     const result = await pool.query(
         `SELECT *
          FROM jobs
          WHERE status = ($1)
          ORDER BY created_at
-         LIMIT 10`,
-        ['pending']
+         LIMIT ($2)`,
+        ['pending', jobCount]
     );
     return result.rows;
 }
@@ -75,13 +75,14 @@ async function getEmailContent(customerId, row_count) {
                       (SELECT username FROM users WHERE id = t.from_id) AS from_name,
                       (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
                       t.amount,
-                      t.transaction_date
-               FROM transactions t
-               WHERE t.from_id = ($1)
-                  or t.to_id = ($2)
-               ORDER BY t.transaction_date DESC` + `${row_count ? ' LIMIT ' + row_count : ''}) sub`
-        + ` ORDER BY sub.transaction_date ASC`,
-        [customerId, customerId]
+                      t.created_at
+               FROM jobs t
+               WHERE (t.from_id = ($1)
+                   OR t.to_id = ($1))
+                 AND type != ($2)
+               ORDER BY t.created_at DESC` + `${row_count ? ' LIMIT ' + row_count : ''}) sub`
+        + ` ORDER BY sub.created_at ASC`,
+        [customerId, "email"]
     );
     return result.rows;
 }

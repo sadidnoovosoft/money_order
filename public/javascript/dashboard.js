@@ -157,14 +157,34 @@ function addToEmailsTable(emailList) {
         const tr = document.createElement("tr");
         tr.id = id;
         tr.appendChild(getCell(email));
-        tr.appendChild(getCell(row_count || "All"));
+        tr.appendChild(getCell(row_count || "All", status === "pending", id));
         tr.appendChild(getCell(capitalize(status)));
         newTableBody.appendChild(tr);
     })
 
-    function getCell(text) {
+    function getCell(text, contenteditable, emailId) {
         const cell = document.createElement("td");
         cell.innerText = text;
+        cell.setAttribute("contenteditable", contenteditable);
+        if (contenteditable) {
+            cell.addEventListener('keydown', async function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (isNaN(this.textContent) || !this.textContent) {
+                        this.textContent = "All";
+                    }
+                    const {message} = await callFetch(`${baseURL}/emails/${emailId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({rowCount: this.textContent})
+                    })
+                    await fetchEmailHistory();
+                    alert(message);
+                }
+            })
+        }
         return cell;
     }
 
@@ -179,7 +199,7 @@ async function init() {
         if (currentUser.role === "customer") {
             document.getElementById("admin-container").remove();
             await fetchEmailHistory();
-            setInterval(() => fetchEmailHistory(), 15000);
+            setInterval(() => fetchEmailHistory(), 5000);
         } else {
             document.getElementById("email").remove();
             await getCustomers();

@@ -40,7 +40,7 @@ app.listen(PORT, () => {
 })
 
 setInterval(() => {
-    processJobs().then(() => {
+    processJobs(10).then(() => {
         console.log("Jobs Processing done!")
     })
-}, 10000);
+}, 20000);
