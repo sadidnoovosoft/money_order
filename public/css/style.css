@@ -211,6 +211,10 @@ td:nth-child(4) {
     max-height: 14rem;
 }
 
+#email td {
+    text-align: center;
+}
+
 thead {
     top: 0;
     position: sticky;
@@ -223,7 +227,7 @@ thead {
 }
 
 #email-history, #email-list {
-    width: 80%;
+    width: 90%;
 }
 
 #email-list {

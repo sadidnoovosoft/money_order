@@ -131,12 +131,14 @@ document.getElementById('email-form').addEventListener("submit", async function 
         console.log(error);
     }
     this.reset();
+    updateInputStatus();
 })
 
 // Rows input should be disabled when checkbox is checked
-document.getElementById("all").addEventListener("click", function () {
+function updateInputStatus() {
     document.getElementById("rowCount").disabled = this.checked;
-})
+}
+document.getElementById("all").addEventListener("click", updateInputStatus);
 
 
 // Displaying email table to customers
@@ -153,10 +155,12 @@ function addToEmailsTable(emailList) {
     const oldTableBody = document.getElementById("email").getElementsByTagName("tbody")[0];
     const newTableBody = document.createElement("tbody");
 
-    emailList.forEach(({id, email, row_count, status}) => {
+    emailList.forEach(({id, email, created_at, row_count, status}) => {
         const tr = document.createElement("tr");
         tr.id = id;
-        tr.appendChild(getCell(email));
+        const date = new Date(created_at);
+        tr.appendChild(getCell(date.toDateString()));
+        tr.appendChild(getCell(date.toLocaleTimeString()))
         tr.appendChild(getCell(row_count || "All", status === "pending", id));
         tr.appendChild(getCell(capitalize(status)));
         newTableBody.appendChild(tr);

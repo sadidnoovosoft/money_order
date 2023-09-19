@@ -55,7 +55,7 @@ router.get("/", async (req, res) => {
         )).rows[0].id;
 
         const result = await pool.query(
-            `SELECT id, ($1) as email, row_count, status
+            `SELECT id, ($1) as email, row_count, status, created_at
              FROM jobs
              WHERE receiver_id = ($2)
                AND type = ($3)
