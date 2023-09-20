@@ -12,6 +12,7 @@
     --light-text: #fff;
     --dark-gray: #999;
     --light-gray: #777;
+    --light-background: #c9c9c9;
     --btn-background-danger: #f10000;
     --btn-danger-hover: #c91d1d;
 }
@@ -193,6 +194,10 @@ td:nth-child(4) {
 #history {
     padding: .5rem 1rem;
     width: 26rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #history h2 {
@@ -203,7 +208,8 @@ td:nth-child(4) {
     overflow: hidden;
     overflow-y: scroll;
     min-height: 1rem;
-    max-height: 25.5rem;
+    max-height: 24rem;
+    width: 100%;
 }
 
 #email .table-wrapper {
@@ -249,6 +255,38 @@ thead {
 
 #email-form {
     margin-top: 1.2rem;
+}
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: .8rem auto;
+    position: absolute;
+    bottom: 0;
+}
+
+.pagination-number,
+.pagination-button{
+    font-size: 1rem;
+    border: none;
+    background-color: var(--light-text);
+    cursor: pointer;
+    height: 1.8rem;
+    width: 2.5rem;
+    border-radius: .2rem;
+    margin: 0 .2rem;
+}
+
+.pagination-number:hover,
+.pagination-button:not(.disabled):hover {
+    background-color: var(--light-background);
+}
+
+.pagination-number.active {
+    color: var(--light-text);
+    background: #0085b6;
 }
 
 /* Making responsive for smaller screen size */

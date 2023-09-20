@@ -9,8 +9,20 @@ router.use(checkAuth);
 
 router.get("/", async (req, res) => {
     const {role, username} = req.user;
+    const {limit, offset} = req.query;
+    let paramIndex = 2;
+
     try {
-        let result;
+        let query = `SELECT t.id,
+                            t.type,
+                            (SELECT username FROM users WHERE id = t.from_id) AS from_name,
+                            (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
+                            t.amount,
+                            t.status
+                     FROM jobs t
+                     WHERE type != ($1)`;
+        const sqlParams = ["email"];
+
         if (role === "customer") {
             const customerId = (await pool.query(
                 `SELECT id
@@ -19,36 +31,29 @@ router.get("/", async (req, res) => {
                 [username]
             )).rows[0].id;
 
-            result = await pool.query(
-                `SELECT t.id,
-                        t.type,
-                        (SELECT username FROM users WHERE id = t.from_id) AS from_name,
-                        (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
-                        t.amount,
-                        t.status
-                 FROM jobs t
-                 WHERE (t.from_id = ($1)
-                     or t.to_id = ($1))
-                   AND type != ($2)
-                 ORDER BY t.created_at`,
-                [customerId, "email"]
-            );
-        } else {
-            result = await pool.query(
-                `SELECT t.id,
-                        t.type,
-                        (SELECT username FROM users WHERE id = t.from_id) AS from_name,
-                        (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
-                        t.amount,
-                        t.status
-                 FROM jobs t
-                 WHERE type != ($1)
-                 ORDER BY t.created_at`,
-                ["email"]
-            );
+            query += ` AND (t.from_id = ($${paramIndex})
+                     or t.to_id = ($${paramIndex}))`;
+            sqlParams.push(customerId);
+            paramIndex += 1;
         }
+        query += ` ORDER BY t.created_at DESC`;
+
+        if (limit) {
+            query += ` LIMIT ($${paramIndex})`;
+            sqlParams.push(limit);
+            paramIndex += 1;
+        }
+        if (offset) {
+            query += ` OFFSET ($${paramIndex})`;
+            sqlParams.push(offset);
+        }
+
+        const result = await pool.query(query, sqlParams);
         res.status(200).json(result.rows);
-    } catch (error) {
+
+    } catch
+        (error) {
+        console.log(error)
         res.status(500).json(error);
     }
 })

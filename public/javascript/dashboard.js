@@ -43,7 +43,7 @@ document.getElementById("deposit-form").addEventListener("submit", async functio
     formData.set("type", "deposit");
 
     await postTransaction(formData);
-    await fetchTransactionHistory();
+    await displayPage();
     this.reset();
 });
 
@@ -54,7 +54,7 @@ document.getElementById("withdraw-form").addEventListener("submit", async functi
     formData.set("type", "withdraw");
 
     await postTransaction(formData);
-    await fetchTransactionHistory();
+    await displayPage();
     this.reset();
 });
 
@@ -70,15 +70,22 @@ document.getElementById("transfer-form").addEventListener("submit", async functi
     }
 
     await postTransaction(formData);
-    await fetchTransactionHistory();
+    await displayPage();
     this.reset();
 });
 
 
 // Get Transaction History
-async function fetchTransactionHistory() {
+async function fetchTransactionHistory({limit, offset}) {
     try {
-        const transactions = await callFetch(`${baseURL}/transactions`);
+        const url = new URL(`${baseURL}/transactions`);
+        const params = new URLSearchParams();
+
+        if (limit) params.append("limit", limit);
+        if (offset) params.append("offset", offset);
+        url.search = params.toString();
+
+        const transactions = await callFetch(url.toString());
         addTransactionsToTable(transactions);
     } catch (error) {
         console.log(error);
@@ -110,6 +117,34 @@ function addTransactionsToTable(transactions) {
     scrollToBottom(".table-wrapper");
 }
 
+// pagination
+const pagination = {
+    pageLimit: 11,
+    currentPage: 1,
+}
+
+async function displayPage() {
+    const {pageLimit, currentPage} = pagination;
+
+    await fetchTransactionHistory({
+        limit: pageLimit,
+        offset: (currentPage - 1) * pageLimit
+    })
+}
+
+document.getElementById("prev-button").addEventListener("click", async function (e) {
+    e.preventDefault();
+    pagination.currentPage = Math.max(pagination.currentPage - 1, 1);
+    document.getElementById("current-page").textContent = pagination.currentPage;
+    await displayPage();
+})
+
+document.getElementById("next-button").addEventListener("click", async function (e) {
+    e.preventDefault();
+    pagination.currentPage = Math.max(pagination.currentPage + 1, 1);
+    document.getElementById("current-page").textContent = pagination.currentPage;
+    await displayPage();
+})
 
 // Send email
 document.getElementById('email-form').addEventListener("submit", async function (e) {
@@ -138,6 +173,7 @@ document.getElementById('email-form').addEventListener("submit", async function 
 function updateInputStatus() {
     document.getElementById("rowCount").disabled = this.checked;
 }
+
 document.getElementById("all").addEventListener("click", updateInputStatus);
 
 
@@ -155,12 +191,12 @@ function addToEmailsTable(emailList) {
     const oldTableBody = document.getElementById("email").getElementsByTagName("tbody")[0];
     const newTableBody = document.createElement("tbody");
 
-    emailList.forEach(({id, email, created_at, row_count, status}) => {
+    emailList.forEach(({id, created_at, row_count, status}) => {
         const tr = document.createElement("tr");
         tr.id = id;
         const date = new Date(created_at);
         tr.appendChild(getCell(date.toDateString()));
-        tr.appendChild(getCell(date.toLocaleTimeString()))
+        tr.appendChild(getCell(date.toLocaleTimeString()));
         tr.appendChild(getCell(row_count || "All", status === "pending", id));
         tr.appendChild(getCell(capitalize(status)));
         newTableBody.appendChild(tr);
@@ -203,14 +239,14 @@ async function init() {
         if (currentUser.role === "customer") {
             document.getElementById("admin-container").remove();
             await fetchEmailHistory();
-            setInterval(() => fetchEmailHistory(), 5000);
+            setInterval(() => fetchEmailHistory(), 10000);
         } else {
             document.getElementById("email").remove();
             await getCustomers();
         }
 
-        await fetchTransactionHistory();
-        setInterval(() => fetchTransactionHistory(), 15000);
+        await displayPage();
+        setInterval(() => displayPage(), 10000);
     } catch (error) {
         console.log(error);
     }

@@ -69,19 +69,17 @@ async function updateStatus(jobId, newStatus) {
 
 async function getEmailContent(customerId, row_count) {
     const result = await pool.query(
-        `SELECT *
-         FROM (SELECT t.id,
-                      t.type,
-                      (SELECT username FROM users WHERE id = t.from_id) AS from_name,
-                      (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
-                      t.amount,
-                      t.created_at
-               FROM jobs t
-               WHERE (t.from_id = ($1)
-                   OR t.to_id = ($1))
-                 AND type != ($2)
-               ORDER BY t.created_at DESC` + `${row_count ? ' LIMIT ' + row_count : ''}) sub`
-        + ` ORDER BY sub.created_at ASC`,
+        `SELECT t.id,
+                t.type,
+                (SELECT username FROM users WHERE id = t.from_id) AS from_name,
+                (SELECT username FROM users WHERE id = t.to_id)   AS to_name,
+                t.amount,
+                t.created_at
+         FROM jobs t
+         WHERE (t.from_id = ($1)
+             OR t.to_id = ($1))
+           AND type != ($2)
+         ORDER BY t.created_at DESC` + `${row_count ? ' LIMIT ' + row_count : ''}`,
         [customerId, "email"]
     );
     return result.rows;
